@@ -96,12 +96,12 @@ function filterRouteParamsFromArgs(routeNamePieces, args) {
 function tokenizeRouteParams(route, params) {
   const routePieces = route.split('/');
   routePieces;
-  return routePieces
+  const result = routePieces
     .reduce((pieces, piece) => {
       let found = false;
       Object.keys(params).forEach((param) => {
         if (piece.indexOf(param) > -1) {
-          pieces.push(`:${param}`);
+          pieces.push(`" + ${param} + "`);
           found = true;
           return;
         }
@@ -112,6 +112,8 @@ function tokenizeRouteParams(route, params) {
       return pieces;
     }, [])
     .join('/'); //?
+
+  return `"${result}"`; //?
 }
 /**
  * @param {Object} apiSpec JSON from response
@@ -121,11 +123,13 @@ function buildEndpointList(apiSpec) {
   return Object.keys(routes)
     .filter(removeBaseRoute)
     .reduce((methods, route) => {
+      route; //?
       routes[route].endpoints.reduce((endpoints, endpoint) => {
         // routes.endpoints.methods
         endpoint.methods.forEach((method) => {
+          method; //?
           // for each method get data from routes.endpoints
-          let { args } = endpoint;
+          let { args } = endpoint; //?
           const routePieces = getRoutePieces(route);
           const routeNameBreakdown = getRouteNameBreakdown(method, routePieces); //?
           const routeName = getRouteName(routeNameBreakdown); //?
@@ -136,7 +140,8 @@ function buildEndpointList(apiSpec) {
             route: tokenizedRoute,
             name: routeName,
             params,
-            args
+            args,
+            method
           };
         });
       }, {});

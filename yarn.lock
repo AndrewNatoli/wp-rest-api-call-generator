@@ -78,6 +78,10 @@ anymatch@^2.0.0:
     micromatch "^3.1.4"
     normalize-path "^2.1.1"
 
+apicase@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/apicase/-/apicase-1.0.0.tgz#f4864c1022d071450a86c8c6b0aad7a817b83158"
+
 append-transform@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/append-transform/-/append-transform-0.4.0.tgz#d76ebf8ca94d276e247a36bad44a4b74ab611991"

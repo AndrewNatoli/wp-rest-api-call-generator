@@ -7,16 +7,18 @@ const buildEndpointList = require('./buildEndpointList');
 const handlebars = require('handlebars');
 const fs = require('fs');
 
-const API_SPEC_URL = `${process.env.WP_API_URL}${process.env.WP_API_PATH}`;
+const { WP_API_URL, WP_API_PATH } = process.env;
+const API_SPEC_URL = `${WP_API_URL}${WP_API_PATH}`;
 
 async function run() {
   try {
     const apiSpec = await getApiSpec(API_SPEC_URL);
     const endpointList = buildEndpointList(apiSpec);
     // console.log(endpointList);
+    console.log(endpointList);
     const templateFile = fs.readFileSync(`${__dirname}/templates/main.handlebars`, 'utf-8');
     const compiledTemplate = handlebars.compile(templateFile);
-    console.log(compiledTemplate({ endpoints: endpointList }));
+    console.log(compiledTemplate({ endpoints: endpointList, API_SPEC_URL, WP_API_URL, WP_API_PATH }));
   } catch (err) {
     bailFromError(`Failed to build from ${API_SPEC_URL}`, err);
   }

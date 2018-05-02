@@ -1,4 +1,35 @@
-Hey 
-{{#each endpoints}} 
-{{this.name}} 
+import fetch from '@apicase/adapter-fetch'
+import { ApiService } from '@apicase/services';
+
+const WordpressService = new ApiService({
+  fetch,
+  url: "{{WP_API_URL}}"
+});
+
+{{#each endpoints}}
+export const {{this.name}} = ({{#each this.params}}{{@key}}{{#if @last}}{{#if this.args }} args = {} {{/if}}{{else}},{{/if}}{{/each}}) => {
+  return WordpressService.doRequest({
+    url: {{{this.route}}},
+    method: {{this.method}},
+    {{#if this.args}}
+    {{#each this.args}}
+    {{#if @first}}
+    body: {
+    {{/if}}
+      {{!-- TODO: Support optional args, etc. --}}
+      {{@key}}: args.{{@key}}{{#if @last}}{{else}},{{/if}}
+    {{#if @last}}
+    }
+    {{/if}}
+    {{/each}}
+    {{/if}}
+  })
+}
 {{/each}}
+{{!--  
+  getPostsById:
+   { route: '/wp/v2/posts/:id',
+     name: 'getPostsById',
+     params: { id: [Object] },
+     args: { context: [Object], password: [Object] } },
+--}}
