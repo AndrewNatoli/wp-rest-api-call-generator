@@ -8,6 +8,18 @@ const WordpressService = new ApiService({
 
 {{#each endpoints}}
 export const {{this.name}} = ({{#each this.params}}{{@key}}{{#if @last}}{{#if this.args }} args = {} {{/if}}{{else}},{{/if}}{{/each}}) => {
+
+  {{#each this.args}}
+  {{#if @first}}
+  const body = {};
+  {{/if}}
+  if (args.{{@key}} !== undefined) {
+    body.{{@key}} = args.{{@key}}
+  } {{#if this.required}}else {
+    throw Error('{{@key}} is required')
+  }{{/if}}
+  {{/each}}
+
   return WordpressService.doRequest({
     url: {{{this.route}}},
     method: {{this.method}},

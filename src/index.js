@@ -18,7 +18,12 @@ async function run() {
     console.log(endpointList);
     const templateFile = fs.readFileSync(`${__dirname}/templates/main.handlebars`, 'utf-8');
     const compiledTemplate = handlebars.compile(templateFile);
-    console.log(compiledTemplate({ endpoints: endpointList, API_SPEC_URL, WP_API_URL, WP_API_PATH }));
+    const output = compiledTemplate({ endpoints: endpointList, API_SPEC_URL, WP_API_URL, WP_API_PATH });
+    fs.writeFile('./output/wordpress-service.js', output, (err) => {
+      if (err) {
+        throw Error(err);
+      }
+    });
   } catch (err) {
     bailFromError(`Failed to build from ${API_SPEC_URL}`, err);
   }
