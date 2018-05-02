@@ -2,12 +2,13 @@ import fetch from '@apicase/adapter-fetch'
 import { ApiService } from '@apicase/services';
 
 const WordpressService = new ApiService({
-  fetch,
-  url: "{{WP_API_URL}}"
+  adapter: fetch,
+  url: "{{WP_API_URL}}",
+  mode: "cors"
 });
 
 {{#each endpoints}}
-export const {{this.name}} = ({{#each this.params}}{{@key}}{{#if @last}}{{#if this.args }} args = {} {{/if}}{{else}},{{/if}}{{/each}}) => {
+export const {{this.name}} = ({{#each this.params}}{{@key}}, {{/each}}args = {}) => {
 
   {{#each this.args}}
   {{#if @first}}
@@ -21,13 +22,11 @@ export const {{this.name}} = ({{#each this.params}}{{@key}}{{#if @last}}{{#if th
   {{/each}}
 
   return WordpressService.doRequest({
-    url: {{{this.route}}},
-    method: {{this.method}},
-    {{#each this.args}}
-    {{#if @first}}
-    body
+    {{#if this.hasBody}}
+    body,
     {{/if}}
-    {{/each}}
+    method: "{{this.method}}",
+    url: {{{this.route}}}
   })
 }
 {{/each}}

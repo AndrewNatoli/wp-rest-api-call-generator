@@ -94,7 +94,7 @@ function filterRouteParamsFromArgs(routeNamePieces, args) {
 }
 
 function tokenizeRouteParams(route, params) {
-  const routePieces = route.split('/');
+  const routePieces = route.split('/').slice(1);
   routePieces;
   const result = routePieces
     .reduce((pieces, piece) => {
@@ -141,7 +141,8 @@ function buildEndpointList(apiSpec) {
             name: routeName,
             params,
             args,
-            method
+            method,
+            hasBody: method !== 'GET' && method !== 'HEAD' ? true : false
           };
         });
       }, {});

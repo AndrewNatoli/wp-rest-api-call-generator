@@ -19,6 +19,7 @@ async function run() {
     const templateFile = fs.readFileSync(`${__dirname}/templates/main.handlebars`, 'utf-8');
     const compiledTemplate = handlebars.compile(templateFile);
     const output = compiledTemplate({ endpoints: endpointList, API_SPEC_URL, WP_API_URL, WP_API_PATH });
+    console.log(output);
     fs.writeFile('./output/wordpress-service.js', output, (err) => {
       if (err) {
         throw Error(err);
