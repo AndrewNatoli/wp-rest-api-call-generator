@@ -23,18 +23,11 @@ export const {{this.name}} = ({{#each this.params}}{{@key}}{{#if @last}}{{#if th
   return WordpressService.doRequest({
     url: {{{this.route}}},
     method: {{this.method}},
-    {{#if this.args}}
     {{#each this.args}}
     {{#if @first}}
-    body: {
-    {{/if}}
-      {{!-- TODO: Support optional args, etc. --}}
-      {{@key}}: args.{{@key}}{{#if @last}}{{else}},{{/if}}
-    {{#if @last}}
-    }
+    body
     {{/if}}
     {{/each}}
-    {{/if}}
   })
 }
 {{/each}}
