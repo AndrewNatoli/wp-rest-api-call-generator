@@ -131,6 +131,9 @@ function buildEndpointList(apiSpec) {
         // routes.endpoints.methods
         endpoint.methods.forEach((method) => {
           method; //?
+          if (!process.env.WHITELISTED_METHODS.includes(method)) {
+            return;
+          }
           // for each method get data from routes.endpoints
           let { args } = endpoint; //?
           const routePieces = getRoutePieces(route);
