@@ -8,7 +8,10 @@ function capitalizeFirstLetter(string) {
  */
 function getRoutePieces(route) {
   route = route.replace(process.env.WP_API_PATH, '');
-  return route.substr(1).split('/'); //?
+  return route
+    .substr(1)
+    .replace('-', '/') // This will enforce camelCasing hyphenated endpoints :D
+    .split('/'); //?
 }
 
 const removeBaseRoute = (route) => route !== process.env.WP_API_PATH;
